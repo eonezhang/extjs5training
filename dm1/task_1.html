@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>DM1 - Task 1</title>
+    <link rel="stylesheet" type="text/css" href="../vendor/extjs/packages/ext-theme-crisp/build/resources/ext-theme-crisp-all-debug.css" />
+    <script type="text/javascript" src="../vendor/extjs/build/ext-all-debug.js"></script>
+
+    <script type="text/javascript">
+
+        Ext.define('acme.model.Category', {
+            extend : 'Ext.data.Model',
+            fields : [{
+                name :'name',
+                type : 'string'
+            }]
+
+        });
+        Ext.define('acme.model.Article', {
+            extend : 'Ext.data.Model',
+            fields : [{
+                name :'name',
+                type : 'string'
+            }],
+
+            associations : [{
+                name : 'categories',
+                model : 'acme.model.Category',
+                type : 'hasMany'
+            }]
+        });
+
+        Ext.application({
+            name : 'acme',
+            launch : function(){
+                var cat1 = Ext.create('acme.model.Category', {
+                    name : 'Cars'
+                });
+                var article = Ext.create('acme.model.Article', {
+                    name : 'Mercedes Benz'
+                });
+
+                article.categories().add(cat1);
+                console.log(article.categories().getRange());
+            }
+        });
+
+    </script>
+</head>
+<body>
+</body>
+</html>

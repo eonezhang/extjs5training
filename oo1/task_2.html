@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>OO1 - Task 2</title>
+    <link rel="stylesheet" type="text/css" href="../vendor/extjs/packages/ext-theme-crisp/build/resources/ext-theme-crisp-all-debug.css" />
+    <script type="text/javascript" src="../vendor/extjs/build/ext-all-debug.js"></script>
+    <script type="text/javascript">
+        Ext.define('acme.Address', {
+            config : {
+                street : '',
+                zipCode : '',
+                city : ''
+            },
+            constructor : function(cfg) {
+                this.initConfig(cfg);
+            }
+        });
+        Ext.define('acme.Person', {
+            config : {
+                name : '',
+                firstname : '',
+                address : null
+            },
+            constructor : function(cfg) {
+                this.initConfig(cfg);
+            }
+        });
+        Ext.define('acme.Customer', {
+            extend : 'acme.Person',
+            statics : {
+                counter : 0
+            },
+            constructor : function(cfg) {
+                this.callParent(arguments);
+                acme.Customer.counter++;
+                console.log(
+                        acme.Customer.counter,
+                        ' instances of acme.Customer created'
+                );
+            },
+            applyAddress : function(value) {
+                console.log("applyAddress: to ", value);
+                if (!(value instanceof acme.Address)) {
+                    console.log("applyAddress: value not of type acme.Address");
+                    return;
+                }
+                console.log("applyAddress: ", this.getAddress(), " to ", value);
+                return value;
+            }
+        });
+        Ext.application({
+            name : 'acme',
+            launch : function(){
+                var address = Ext.create('acme.Address', {
+                    street : 'Smithroad 1',
+                    city : 'Jack City',
+                    zipCode : 12345
+                });
+                var customers = [];
+                for (var i = 0, len = 10; i < len; i++) {
+                    customers.push(Ext.create('acme.Customer', {
+                        name : 'Smith',
+                        firstName : 'John',
+                        address : 'Smithroad 1 in 12345 Jack City'
+                    }));
+                }
+                customers[0].setAddress(address);
+            }
+        });
+    </script>
+</head>
+<body>
+</body>
+</html>

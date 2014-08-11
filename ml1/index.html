@@ -1,0 +1,131 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>ML1</title>
+    <link rel="stylesheet" type="text/css" href="../vendor/extjs/packages/ext-theme-crisp/build/resources/ext-theme-crisp-all-debug.css" />
+    <script type="text/javascript" src="../vendor/extjs/build/ext-all-debug.js"></script>
+
+    <script type="text/javascript">
+
+        Ext.application({
+
+            name : 'acme',
+            launch : function(){
+                var tabPanel = Ext.create('Ext.Panel', {
+                    i : 0.976353,
+                    activatedTabs : {},
+                    title : 'Panel',
+                    enableTabScroll : true,
+                    layout : 'border',
+                    height : 600,
+                    width : 800,
+                    renderTo : document.body,
+                    initComponent : function() {
+
+                        this.on('afterrender', function() {
+                            this.on('panelavailable', function(triggerButton, panel) {
+                                var parts = panel.itemId.split('_');
+                                if (parts) {
+                                    if (parts.length) {
+                                        var nm = parseInt(parts[1], 10);
+                                        while (nm > 0) {
+                                            nm = nm - 2;
+                                            if (nm === 0) {
+                                                this.getComponent('tabPanel').add(
+                                                        panel
+                                                );
+                                                this.getComponent('tabPanel').setActiveTab(
+                                                        panel.itemId
+                                                );
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                        }, this);
+                        Ext.Panel.prototype.initComponent.call(this, arguments);
+                    },
+                    items : [
+                        Ext.create('Ext.tab.Panel', {
+                            region : 'center',
+                            height : 600,
+                            activeItem : 0,
+                            title : 'Tab Panel',
+                            itemId : 'tabPanel',
+                            items : [
+                                Ext.create('Ext.Panel', {
+                                    region : 'center',
+                                    height : 600,
+                                    title : 'Perma Panel',
+                                    itemId : 'permaPanel'
+                                })
+                            ]
+                        }),
+                        Ext.create('Ext.Component', {
+                            region : 'south',
+                            itemId : 'statusBar',
+                            height : 40,
+                            autoEl : {
+                                tagName : 'div',
+                                html : 'Ready'
+                            },
+                            listeners : {
+                                afterrender : {
+                                    fn : function() {
+                                        this.ownerCt.getComponent('tabPanel')
+                                                .getComponent('permaPanel').on(
+                                                'activate',
+                                                function() {
+                                                    this.ownerCt.getComponent('statusBar').update(
+                                                            'Perma Panel activated'
+                                                    );
+                                                }, this);
+                                    }
+                                }
+                            }
+                        })
+                    ],
+                    dockedItems : [{
+                        xtype : 'toolbar',
+                        position : 'top',
+                        items : [{
+                            text : 'Open Panel',
+                            i : 0,
+                            myOwner : null,
+                            handler : function() {
+                                var me = this,
+                                        myOwner = null;
+                                this.i++;
+                                if (!this.myOwner) {
+                                    this.myOwner = this.ownerCt.ownerCt;
+                                }
+                                myOwner = this.myOwner;
+                                myOwner.fireEvent('panelavailable', this, Ext.create('Ext.Panel', {
+                                    closable : true,
+                                    itemId : 'tab_' + this.i,
+                                    title : 'Panel ' + this.i,
+                                    listeners : {
+                                        activate : {
+                                            fn : function() {
+                                                myOwner.getComponent('statusBar').update(
+                                                        this.title + ' activated'
+                                                );
+                                                myOwner.activatedTabs[this.itemId] = this;
+                                            }
+                                        }
+                                    }
+                                }));
+                            }
+                        }]
+                    }],
+                    activeItem : 0
+                });
+            }
+        });
+
+    </script>
+</head>
+<body>
+</body>
+</html>

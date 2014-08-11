@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>SA1 - Task 1</title>
+    <link rel="stylesheet" type="text/css" href="../vendor/extjs/packages/ext-theme-crisp/build/resources/ext-theme-crisp-all-debug.css" />
+    <script type="text/javascript" src="../vendor/extjs/build/ext-all-debug.js"></script>
+
+    <script type="text/javascript">
+
+        Ext.state.Manager.setProvider(
+                Ext.create('Ext.state.CookieProvider')
+        );
+
+        Ext.application({
+            name : 'acme',
+            launch : function(){
+                var w = Ext.create('Ext.Window', {
+                    stateId : 'windowA',
+                    width : 500,
+                    height : 400,
+                    stateful : true,
+                    initComponent : function() {
+                        var me = this;
+                        me.items = [
+                            Ext.create('Ext.TabPanel', {
+                                stateful : true,
+                                stateId : 'windowATab',
+                                stateEvents : ['tabchange'],
+                                activeTab : Ext.state.Manager.get('windowATab')
+                                        ? Ext.state.Manager.get('windowATab').activeTab
+                                        : 0,
+                                getState : function() {
+                                    return {
+                                        activeTab : this.getActiveTab().itemId
+                                    };
+                                },
+                                items : [{
+                                    title : 'Tab A',
+                                    itemId : 'tabA'
+                                }, {
+                                    title : 'Tab B',
+                                    itemId : 'tabB'
+                                }, {
+                                    title : 'Tab C',
+                                    itemId : 'tabC'
+                                }, {
+                                    title : 'Tab D',
+                                    itemId : 'tabD'
+                                }]
+                            })
+                        ];
+                        Ext.Window.prototype.initComponent.call(me);
+                    }
+                });
+                w.show();
+            }});
+
+    </script>
+</head>
+<body>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>DV1 - Task 1</title>
+    <link rel="stylesheet" type="text/css" href="../vendor/extjs/packages/ext-theme-crisp/build/resources/ext-theme-crisp-all-debug.css" />
+    <script type="text/javascript" src="../vendor/extjs/build/ext-all-debug.js"></script>
+
+
+    <style type="text/css">
+        .listEntry {
+            cursor : pointer;
+        }
+        .overCls {
+            background-color : red;
+        }
+        .selectedCls {
+            background-color : green;
+        }
+    </style>
+
+    <script type="text/javascript">
+
+
+        Ext.define('acme.model.Customer', {
+            extend : 'Ext.data.Model',
+            fields : [{
+                name :'name',
+                type : 'string'
+            }, {
+                name :'firstname',
+                type : 'string'
+            }, {
+                name : 'id'
+            }],
+            associations : [{
+                type : 'hasMany',
+                name : 'address',
+                model : 'acme.model.Address'
+            }]
+        });
+        Ext.define('acme.store.Customer', {
+            extend : 'Ext.data.Store',
+            model : 'acme.model.Customer',
+            findMe : function(name) {
+                var me = this;
+                return me.findExact('name', name);
+            }
+        });
+        Ext.define('acme.view.ListView', {
+            extend : 'Ext.view.View',
+            overItemCls : 'overCls',
+            selectedItemCls : 'selectedCls',
+            itemSelector : 'div.listEntry',
+            singleSelect : true,
+            initComponent : function() {
+                var me = this;
+                me.renderTo = document.body;
+                me.tpl = new Ext.XTemplate(
+                        '<div>',
+                        '<tpl for=".">',
+                        '<div class="listEntry" id="entry_{id}">{name}</div>',
+                        '</tpl>',
+                        '</div>'
+                );
+                me.on('selectionchange', me.onListSelectionChange, me);
+                me.callParent(arguments);
+            },
+            onListSelectionChange : function(view, selections) {
+                var me = this,
+                        id, ind, rec;
+                if (selections && selections.length) {
+                    id = selections[0].get('id');
+                    ind = me.store.findExact('id', id);
+                    if (ind < 0) {
+                        console.log("id not found: ", id);
+                        return;
+                    }
+                    rec = me.store.getAt(ind);
+                    console.log("Record clicked: ", rec);
+                    return;
+                }
+                console.log("Could not determine selected record");
+            }
+        });
+
+        Ext.application({
+            name : 'acme',
+            launch : function(){
+                var customerStore = Ext.create('acme.store.Customer', {
+                    data : [
+                        Ext.create('acme.model.Customer', {
+                            name : 'name1', firstname: 'firstname1', id : 1
+                        }),
+                        Ext.create('acme.model.Customer', {
+                            name : 'name2', firstname: 'firstname2', id : 2
+                        }),
+                        Ext.create('acme.model.Customer', {
+                            name : 'name3', firstname: 'firstname3', id : 3
+                        }),
+                        Ext.create('acme.model.Customer', {
+                            name : 'name4', firstname: 'firstname4', id : 4
+                        })
+                    ]
+                });
+                var listView = Ext.create('acme.view.ListView', {
+                    store : customerStore
+                });
+            }
+        });
+
+    </script>
+</head>
+<body>
+</body>
+</html>

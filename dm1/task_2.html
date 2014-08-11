@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>DM1 - Task 2</title>
+    <link rel="stylesheet" type="text/css" href="../vendor/extjs/packages/ext-theme-crisp/build/resources/ext-theme-crisp-all-debug.css" />
+    <script type="text/javascript" src="../vendor/extjs/build/ext-all-debug.js"></script>
+
+    <script type="text/javascript">
+
+        Ext.define('acme.model.Category', {
+            extend : 'Ext.data.Model',
+            fields : [{
+                name :'name',
+                type : 'string'
+            }]
+
+        });
+        Ext.define('acme.model.Article', {
+            extend : 'Ext.data.Model',
+            fields : [{
+                name :'name',
+                type : 'string'
+            }],
+
+            associations : [{
+                name : 'categories',
+                model : 'acme.model.Category',
+                type : 'hasMany'
+            }],
+
+            isValid : function() {
+                var valid = this.callParent();
+
+                if (!valid) {
+                    return false;
+                }
+
+                var data = this.getAssociatedData();
+
+                if (!data['categories'] || !data['categories'].length) {
+                    return false;
+                }
+
+                return true;
+            }
+        });
+
+        Ext.application({
+
+            name : 'acme',
+
+            launch : function(){
+
+                var cat1 = Ext.create('acme.model.Category', {
+                    name : 'Cars'
+                });
+                var article = Ext.create('acme.model.Article', {
+                    name : 'Mercedes Benz'
+                });
+
+                // invalid
+                console.log("valid? ->", article.isValid());
+
+                // valid
+                article.categories().add(cat1);
+                console.log("valid? ->", article.isValid());
+
+                // invalid
+                article.categories().removeAll();
+                console.log("valid? ->", article.isValid());
+            }
+
+        });
+
+    </script>
+</head>
+<body>
+</body>
+</html>

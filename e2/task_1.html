@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>E2 - Task 1</title>
+    <link rel="stylesheet" type="text/css" href="../vendor/extjs/packages/ext-theme-crisp/build/resources/ext-theme-crisp-all-debug.css" />
+    <script type="text/javascript" src="../vendor/extjs/build/ext-all-debug.js"></script>
+
+    <script type="text/javascript">
+
+        Ext.define('WindowA', {
+            extend : 'Ext.Window',
+            windowB : null,
+            height : 300,
+            width : 400,
+            initComponent : function() {
+                var me = this;
+                me.dockedItems = [{
+                    xtype : 'toolbar',
+                    position : 'top',
+                    items : [{
+                        text : 'Show Window B',
+                        handler : me.onButtonClick,
+                        scope : this
+                    }]
+                }];
+                me.callParent();
+            },
+            onButtonClick : function() {
+                var me = this;
+                if (!me.windowB) {
+                    me.windowB = me.getWindowB();
+                }
+                if (!me.windowB.isVisible()) {
+                    console.log("Calling show() on WindowB");
+                    me.windowB.show();
+                } else {
+                    console.log("Calling hide() on WindowB");
+                    me.windowB.hide();
+                }
+            },
+            getWindowB : function() {
+                var me = this;
+                if (!me.windowB) {
+                    console.log("Creating WindowB");
+                    me.windowB = new WindowB();
+                    me.installWindowBListener(true);
+                }
+                return me.windowB;
+            },
+            installWindowBListener : function(install) {
+                var me = this;
+                if (!me.windowB) {
+                    return;
+                }
+                if (install) {
+                    console.log("installing managed listeners");
+                    me.mon(me.windowB, 'destroy', me.onWindowBDestroy, me);
+                    me.mon(me.windowB, 'b_shown', me.onWindowBShow, me);
+                    me.mon(me.windowB, 'b_hidden', me.onWindowBHide, me);
+                } else {
+                    console.log("un-installing managed listeners");
+                    me.mun(me.windowB, 'destroy', me.onWindowBDestroy, me);
+                    me.mun(me.windowB, 'b_shown', me.onWindowBShow, me);
+                    me.mun(me.windowB, 'b_hidden', me.onWindowBHide, me);
+                }
+            },
+            onWindowBShow : function() {
+                var me = this;
+                me.body.update('Window B shown');
+            },
+            onWindowBHide : function() {
+                var me = this;
+                me.body.update('Window B hidden');
+            },
+            onWindowBDestroy : function() {
+                var me = this;
+                me.installWindowBListener(false);
+                me.windowB = null;
+            }
+        });
+        Ext.define('WindowB', {
+            extend : 'Ext.Window',
+            height : 100,
+            width : 100,
+            initComponent : function() {
+                var me = this;
+
+                me.on('show', me.onMeShow, me);
+                me.on('hide', me.onMeHide, me);
+                WindowB.superclass.initComponent.call(this);
+            },
+            onMeShow : function() {
+                var me = this;
+                console.log("B firing b_shown");
+                me.fireEvent('b_shown', me);
+            },
+            onMeHide : function() {
+                var me = this;
+                console.log("B firing b_hidden");
+                me.fireEvent('b_hidden', me);
+            }
+        });
+        Ext.application({
+            name : 'acme',
+            launch : function() {
+                (new WindowA()).show();
+            }
+        });
+    </script>
+</head>
+<body>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>MVC1 - Task 1</title>
+    <link rel="stylesheet" type="text/css" href="../vendor/extjs/packages/ext-theme-crisp/build/resources/ext-theme-crisp-all-debug.css" />
+    <script type="text/javascript" src="../vendor/extjs/build/ext-all-debug.js"></script>
+
+    <script type="text/javascript">
+
+        Ext.application({
+            name : 'acme',
+            controllers : [
+                'acme.controller.MainController'
+            ],
+            launch : function() {
+                var me = this,
+                        viewport;
+
+                viewport = Ext.create("Ext.container.Viewport", {
+                    layout : 'hbox',
+                    items : [{
+                        title : 'mainview_1',
+                        xtype : 'mainview',
+                        itemId : 'mainview_1'
+                    }, {
+                        title : 'mainview_2',
+                        xtype : 'mainview',
+                        itemId : 'mainview_2'
+                    }, {
+                        title : 'mainview_3',
+                        xtype : 'mainview',
+                        itemId : 'mainview_3'
+                    }, {
+                        xtype : 'button',
+                        text : 'check selector for xtype mainview',
+                        handler : function() {
+                            console.log(me.getController('acme.controller.MainController').getMainView());
+                        }
+                    }, {
+                        xtype : 'button',
+                        text : 'check selector for mainview_3',
+                        handler : function() {
+                            console.log(me.getController('acme.controller.MainController').getMainView3());
+                        }
+                    }]
+                });
+            }
+        });
+
+    </script>
+</head>
+<body>
+</body>
+</html>

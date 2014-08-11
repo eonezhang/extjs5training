@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>DM3 - Task 1</title>
+    <link rel="stylesheet" type="text/css" href="../vendor/extjs/packages/ext-theme-crisp/build/resources/ext-theme-crisp-all-debug.css" />
+    <script type="text/javascript" src="../vendor/extjs/build/ext-all-debug.js"></script>
+
+    <script type="text/javascript">
+
+
+        Ext.define('acme.model.Customer', {
+            extend : 'Ext.data.Model',
+            fields : [{
+                name :'name',
+                type : 'string'
+            }, {
+                name :'firstname',
+                type : 'string'
+            }],
+            associations : [{
+                type : 'hasMany',
+                name : 'address',
+                model : 'acme.model.Address'
+            }]
+        });
+        Ext.define('acme.store.Customer', {
+            extend : 'Ext.data.Store',
+            model : 'acme.model.Customer'
+        });
+        Ext.application({
+            name : 'acme',
+            launch : function(){
+                var customerStore = Ext.create('acme.store.Customer', {
+                    data : [
+                        Ext.create('acme.model.Customer', {
+                            name : 'name1', firstname: 'firstname1'
+                        }),
+                        Ext.create('acme.model.Customer', {
+                            name : 'name2', firstname: 'firstname2'
+                        }),
+                        Ext.create('acme.model.Customer', {
+                            name : 'name3', firstname: 'firstname3'
+                        }),
+                        Ext.create('acme.model.Customer', {
+                            name : 'name4', firstname: 'firstname4'
+                        })
+                    ]
+                });
+                console.log(customerStore.getRange());
+            }
+        });
+
+    </script>
+</head>
+<body>
+</body>
+</html>

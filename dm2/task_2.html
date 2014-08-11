@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>DM2 - Task 2</title>
+    <link rel="stylesheet" type="text/css" href="../vendor/extjs/packages/ext-theme-crisp/build/resources/ext-theme-crisp-all-debug.css" />
+    <script type="text/javascript" src="../vendor/extjs/build/ext-all-debug.js"></script>
+
+    <script type="text/javascript">
+
+        Ext.define('acme.model.Customer', {
+            extend : 'Ext.data.Model',
+            proxy : {
+                type : 'ajax',
+                api : {
+                    read : './load',
+                    create : './create',
+                    update : './update',
+                    destroy : './destroy'
+                }
+            },
+            fields : [{
+                name :'name',
+                type : 'string'
+            }, {
+                name :'firstname',
+                type : 'string'
+            }]
+        });
+        Ext.application({
+            name : 'acme',
+            launch : function(){
+                acme.model.Customer.load(123);
+                var customer = Ext.create('acme.model.Customer', {
+                    name : 'Smith',
+                    firstname : 'John'
+                });
+                customer.save();
+                var customer = Ext.create('acme.model.Customer', {
+                    name : 'Smith',
+                    firstname : 'John',
+                    id : '1231'
+                });
+
+                customer.save();
+                customer.erase();
+            }
+        });
+
+    </script>
+</head>
+<body>
+</body>
+</html>

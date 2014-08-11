@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>E1 - Task 1</title>
+    <link rel="stylesheet" type="text/css" href="../vendor/extjs/packages/ext-theme-crisp/build/resources/ext-theme-crisp-all-debug.css" />
+    <script type="text/javascript" src="../vendor/extjs/build/ext-all-debug.js"></script>
+
+    <script type="text/javascript">
+
+        Ext.define('acme.mixins.Commentable', {
+            getComment : function() {
+                console.log("this would return a comment");
+            }
+        });
+        Ext.define('acme.Person', {
+            config : {
+                name : '',
+                firstname : '',
+                address : null
+            },
+            constructor : function(cfg) {
+                this.initConfig(cfg);
+            }
+        });
+        Ext.define('acme.Customer', {
+            extend : 'acme.Person',
+            mixins : {
+                commentable : 'acme.mixins.Commentable'
+            },
+            applyAddress : function(value) {
+                return value;
+            }
+        });
+        Ext.application({
+            name : 'acme',
+            launch : function(){
+                var customer = Ext.create('acme.Customer', {
+                    name : 'Smith',
+                    firstName : 'John',
+                    address : 'Smithroad 1 in 12345 Jack City'
+                });
+                customer.getComment();
+
+                // or, via named mixins:
+                // watch the scope, which has to be explicitely set!
+                customer.mixins.commentable.getComment.call(this);
+            }
+        });
+    </script>
+</head>
+<body>
+</body>
+</html>
