@@ -1,0 +1,44 @@
+<!Doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="vendor/extjs/packages/ext-theme-crisp/build/resources/ext-theme-crisp-all-debug.css" />
+    <script type="text/javascript" src="vendor/extjs/build/ext-all-debug.js"></script>
+
+    <script type="text/javascript">
+
+        Ext.define("acme.Util.Abstract", {
+            // … properties as previously defined
+            setVersion : function(version) {
+                this.version = version;
+            }
+        });
+        Ext.define("acme.Util.Bic", {
+            extend : "acme.Util.Abstract",
+            finalizeVersion : function(version) {
+                this.superclass.setVersion.apply(this, ["FINAL"]);
+                // OR:
+                this.superclass.setVersion.apply(this, arguments);
+                // OR:
+                this.superclass.setVersion.call(this, "FINAL");
+                // both equal to JAVA's super.setVersion("FINAL");
+            }
+        });
+
+        Ext.application({
+            name : 'acme',
+            launch : function() {
+
+                var bic = Ext.create('acme.Util.Bic');
+
+                bic.finalizeVersion("BETA");
+
+                console.log(bic.version);
+            }
+        });
+
+    </script>
+</head>
+<body>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!Doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="vendor/extjs/packages/ext-theme-crisp/build/resources/ext-theme-crisp-all-debug.css" />
+    <script type="text/javascript" src="vendor/extjs/build/ext-all-debug.js"></script>
+
+    <script type="text/javascript">
+
+        Ext.define("acme.model.Order", {
+            extend : 'Ext.data.Model',
+
+             fields : [{
+                name : 'customerName',
+                type : 'string'
+            }],
+
+            validators : {
+                customerName  : 'presence'
+            }
+        });
+
+        Ext.application({
+            name : 'acme',
+            launch : function() {
+
+                var order = Ext.create("acme.model.Order");
+                console.log("dirty? -> ", order.getValidation().dirty);
+                var valid = order.isValid();
+                console.log(valid);
+
+                var order = Ext.create("acme.model.Order", {
+                    customerName : 'D. Lightman'
+                });
+
+                console.log("dirty? -> ", order.getValidation().dirty);
+                var valid = order.isValid();
+                console.log(valid);
+            }
+        });
+
+    </script>
+</head>
+<body>
+</body>
+</html>

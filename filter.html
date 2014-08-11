@@ -1,0 +1,43 @@
+<!Doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="vendor/extjs/packages/ext-theme-crisp/build/resources/ext-theme-crisp-all-debug.css" />
+    <script type="text/javascript" src="vendor/extjs/build/ext-all-debug.js"></script>
+
+    <script type="text/javascript">
+
+        Ext.define("acme.model.Customer", {
+            extend : 'Ext.data.Model',
+            fields : [{
+                name : 'name',
+                type : 'string'
+            }]
+        });
+
+        Ext.define('acme.Store.Customer', {
+            extend : 'Ext.data.Store',
+
+            remoteFilter : true,
+            model        : 'acme.model.Customer',
+            proxy        : {
+                type : 'ajax',
+                url  : '/customer/load'
+            }
+        });
+
+        Ext.application({
+            name : 'acme',
+            launch : function() {
+
+                var store = Ext.create("acme.Store.Customer");
+                store.filter('name', "Parker");
+
+            }
+        });
+
+    </script>
+</head>
+<body>
+</body>
+</html>

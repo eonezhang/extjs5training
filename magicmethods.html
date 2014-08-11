@@ -1,0 +1,39 @@
+<!Doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="vendor/extjs/packages/ext-theme-crisp/build/resources/ext-theme-crisp-all-debug.css" />
+    <script type="text/javascript" src="vendor/extjs/build/ext-all-debug.js"></script>
+
+    <script type="text/javascript">
+
+        Ext.define("acme.Util", {
+            config : {
+                version : "V1.0r4342"
+            },
+
+            applyVersion : function(version) {
+                return "BETA!";
+            },
+
+            constructor : function(config) {
+                this.initConfig(config);
+            }
+        });
+
+        Ext.application({
+            name : 'acme',
+            launch : function() {
+
+                var util = Ext.create("acme.Util");
+                util.setVersion("beta");
+                console.log(util.getVersion());
+
+            }
+        });
+
+    </script>
+</head>
+<body>
+</body>
+</html>

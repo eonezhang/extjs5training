@@ -1,0 +1,53 @@
+<!Doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="vendor/extjs/packages/ext-theme-crisp/build/resources/ext-theme-crisp-all-debug.css" />
+    <script type="text/javascript" src="vendor/extjs/build/ext-all-debug.js"></script>
+
+    <script type="text/javascript">
+
+        Ext.application({
+            name : 'acme',
+            launch : function() {
+
+                var data = {
+                    names : [
+                        {name : 'Peter'},
+                        {name : 'Paul'},
+                        {name : 'Mary'}
+                    ]
+                };
+
+                var tpl = new Ext.XTemplate(
+                        '<table>',
+                        '<tbody>',
+                        '<tr><td>Name</td></tr>',
+
+                        '<tpl for="names">',
+                        '<tr><td>',
+                        '<span>{name}</span>',
+                        ' - ',
+                        '<span>{[this.isMary(values.name)]}</span>',
+                        '</td></tr>',
+                        '</tpl>',
+
+                        '<tbody>',
+                        '</table>',
+                        {
+                            isMary : function(name) {
+                                return name == 'Mary' ? true : false;
+                            }
+                        }
+                );
+
+                tpl.overwrite(document.body, data);
+
+            }
+        });
+
+    </script>
+</head>
+<body>
+</body>
+</html>

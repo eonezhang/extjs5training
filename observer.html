@@ -1,0 +1,42 @@
+<!Doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="vendor/extjs/packages/ext-theme-crisp/build/resources/ext-theme-crisp-all-debug.css" />
+    <script type="text/javascript" src="vendor/extjs/build/ext-all-debug.js"></script>
+
+    <script type="text/javascript">
+
+        MouseTrigger = Ext.extend(Ext.util.Observable, {
+            initComponent : function() {
+                this.addEvents('mousemove', 'mouseclick');
+            },
+            foo : function() {
+                this.fireEvent('mouseclick', this);
+            }
+        });
+
+        Ext.define('Some.Observer', {
+            handleMouseClick : function() {
+                console.log(arguments);
+            }
+        })
+
+        Ext.application({
+            name : 'acme',
+            launch : function() {
+
+                var ob = new Some.Observer();
+                var mt = new MouseTrigger();
+                mt.on('mouseclick', ob.handleMouseClick, ob);
+
+                mt.foo();
+
+            }
+        });
+
+    </script>
+</head>
+<body>
+</body>
+</html>

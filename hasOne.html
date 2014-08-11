@@ -1,0 +1,49 @@
+<!Doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="vendor/extjs/packages/ext-theme-crisp/build/resources/ext-theme-crisp-all-debug.css" />
+    <script type="text/javascript" src="vendor/extjs/build/ext-all-debug.js"></script>
+
+    <script type="text/javascript">
+
+        Ext.define("acme.model.Order", {
+            extend : 'Ext.data.Model',
+            associations : [{
+                type  : 'hasOne',
+                model : 'acme.model.ShippingAddress'
+            }]
+        });
+        Ext.define("acme.model.ShippingAddress", {
+            extend : 'Ext.data.Model',
+
+             fields : [{
+                name : 'street',
+                type : 'string'
+            }]
+        });
+
+        Ext.application({
+            name : 'acme',
+            launch : function() {
+
+                var address =
+                        Ext.create("acme.model.ShippingAddress",{
+                    street : 'Comusstrasse 23'
+                });
+
+                var order = Ext.create("acme.model.Order", {
+                    customerName : 'D. Lightman'
+                });
+
+                order['setAcme.model.ShippingAddress'](address);
+                console.log(order['getAcme.model.ShippingAddress']());
+
+            }
+        });
+
+    </script>
+</head>
+<body>
+</body>
+</html>
