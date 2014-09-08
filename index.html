@@ -7,6 +7,61 @@
 
     <script type="text/javascript">
 
+        Ext.define("acme.model.Order", {
+
+            extend : 'Ext.data.Model',
+
+            entityName : 'Order',
+
+            fields : [{
+                name : 'id'
+            }, {
+                name : 'name'
+            }]
+
+        });
+
+        Ext.define("acme.model.OrderItem", {
+
+            extend : 'Ext.data.Model',
+
+            entityName : 'Article',
+
+            fields : [{
+                name : 'id'
+            }, {
+                name : 'name'
+            }, {
+                name : 'orderId',
+                reference :  'Order'
+            }]
+
+        });
+
+
+        Ext.application({
+            name : 'acme',
+            launch : function() {
+
+                var order = Ext.create('acme.model.Order');
+console.log(order);
+
+                var order2 = Ext.create('acme.model.Order');
+
+                var article1 = Ext.create('acme.model.OrderItem');
+                var article2 = Ext.create('acme.model.OrderItem');
+
+                order.orderItems().add([article1, article2]);
+
+                order2.orderItems().add([article1]);
+
+                console.log(order.orderItems().getRange())
+                console.log(order2.orderItems().getRange())
+
+                console.log(article1.getOrder());
+            }
+        });
+
 
     </script>
 </head>

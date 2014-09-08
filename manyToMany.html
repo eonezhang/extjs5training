@@ -7,13 +7,27 @@
 
     <script type="text/javascript">
 
-        Ext.define("acme.model.Order", {
+        Ext.define('acme.model.Base', {
+
+            extend : 'Ext.data.Model',
+
+            schema : {
+                namespace : 'acme.model',
+            }
+
+        });
+
+        Ext.define("acme.model.Category", {
             extend : 'Ext.data.Model',
 
             fields : [{
-                name  : 'orderName',
+                name  : 'categoryName',
                 type  : 'string'
-            }]
+            }],
+
+            manyToMany : [
+                'Article'
+            ]
         });
 
         Ext.define("acme.model.Article", {
@@ -22,9 +36,6 @@
             fields : [{
                 name : 'articleName',
                 type : 'string'
-            }, {
-                name      : 'orderId',
-                reference : 'acme.model.Order'
             }]
         });
 
@@ -36,16 +47,17 @@
                     articleName : 'Bookshelf'
                 });
 
-                var order = Ext.create("acme.model.Order", {
-                    orderName : 'Delivery'
+                var category = Ext.create("acme.model.Category", {
+                    categoryName : 'Delivery'
                 });
 
-                console.log(order);
+                console.log(article);
+                console.log(category);
 
-                order.orderAcmeModelArticles().add(article);
+                category.articles().add(article);
 
-                console.log(order.orderAcmeModelArticles());
-
+                console.log(article.categories().getRange());
+                console.log(category.articles().getRange());
 
 
             }

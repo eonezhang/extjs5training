@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>SC1 - Task 1</title>
+    <link rel="stylesheet" type="text/css" href="../vendor/extjs/packages/ext-theme-crisp/build/resources/ext-theme-crisp-all-debug.css" />
+    <script type="text/javascript" src="../vendor/extjs/build/ext-all-debug.js"></script>
+
+    <script type="text/javascript">
+
+
+        Ext.define('acme.model.Base', {
+
+            extend : 'Ext.data.Model'
+
+        });
+
+        Ext.define('acme.model.Customer', {
+
+            extend : 'acme.model.Base',
+
+            fields : [{
+                name : 'firstName',
+                type : 'string'
+            }, {
+                name : 'lastName',
+                type : 'string'
+            }]
+
+        });
+
+        Ext.define('acme.model.Order', {
+
+            extend : 'acme.model.Base',
+
+            fields : [{
+                name : 'orderNumber',
+                type : 'string'
+            }, {
+                name      : 'customerId',
+                reference : 'acme.model.Customer',
+                type      : 'int'
+            }]
+
+
+        });
+
+
+
+        Ext.application({
+
+            name : 'acme',
+
+            launch : function() {
+
+                var customer = Ext.create('acme.model.Customer', {
+                    firstName : 'Peter',
+                    lastName  : 'Griffin'
+                });
+
+                var order = Ext.create('acme.model.Order', {
+                    orderNumber : 123
+                });
+
+
+                console.log(customer);
+            }
+        });
+
+    </script>
+</head>
+<body>
+</body>
+</html>

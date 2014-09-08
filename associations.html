@@ -1,0 +1,131 @@
+<!Doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="vendor/extjs/packages/ext-theme-crisp/build/resources/ext-theme-crisp-all-debug.css" />
+    <script type="text/javascript" src="vendor/extjs/build/ext-all-debug.js"></script>
+
+    <script type="text/javascript">
+
+        Ext.define('acme.model.Base', {
+
+            extend : 'Ext.data.Model',
+
+            schema : {
+                namespace : 'acme.model',
+                proxy : {
+                    type : 'ajax',
+                    api : {
+                        create  : '{entityName}/create.php',
+                        read    : '{entityName}/load.php',
+                        update  : '{entityName}/update.php',
+                        destroy : '{entityName}/delete.php'
+                    }
+                }
+            }
+
+        });
+
+        /**
+         * A basic address class.
+         */
+        Ext.define('acme.model.Address', {
+
+            extend : 'acme.model.Base',
+
+            fields : [{
+                name : 'street',
+                type : 'string'
+            }]
+
+        });
+
+        /**
+         * The customer.
+         * A customer has ONE address.
+         * A customer has MANY orders
+         */
+        Ext.define('acme.model.Customer', {
+
+            extend : 'acme.model.Base',
+
+            fields : [{
+                name : 'firstName',
+                type : 'string'
+            }, {
+                name : 'lastName',
+                type : 'string'
+            }, {
+                name       : 'addressId',
+                reference  : 'Address',
+                type       : 'int',
+                allowBlank : false,
+                unique     : true
+            }]
+
+        });
+
+        /**
+         * A basic order class.
+         */
+        Ext.define('acme.model.Order', {
+
+            extend : 'acme.model.Base',
+
+            fields : [{
+                name : 'orderNumber',
+                type : 'string'
+            }, {
+                // each order has a customer id
+                name      : 'customerId',
+                reference : 'Customer',
+                type      : 'int'
+            }]
+
+        });
+
+
+
+        Ext.application({
+            name : 'acme',
+            launch : function() {
+
+                // create an order
+                var customer = Ext.create('acme.model.Customer', {
+                    firstName : 'Peter',
+                    lastName  : 'Griffin'
+                });
+
+                var address = Ext.create('acme.model.Address', {
+                    street : 'Parker Lane 1234'
+                });
+
+                var order = Ext.create('acme.model.Order', {
+                    orderNumber : '#1234'
+                });
+
+                customer.setAddress(address);
+
+                customer.getAddress();
+                address.getCustomer();
+                address.setCustomer(customer);
+
+                console.log(customer);
+                // notice customer.orders()
+
+                console.log(order);
+                // notice order.getCustomer
+                // notice order.setCustomer
+
+                customer.addOrder(order);
+
+
+
+            }
+        });
+
+    </script>
+</head>
+<body>
+</body>
+</html>

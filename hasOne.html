@@ -9,11 +9,14 @@
 
         Ext.define("acme.model.Order", {
             extend : 'Ext.data.Model',
-            associations : [{
-                type  : 'hasOne',
-                model : 'acme.model.ShippingAddress'
+
+            fields : [{
+                name      : 'shippingAddressId',
+                reference : 'acme.model.ShippingAddress',
+                unique    : true
             }]
         });
+
         Ext.define("acme.model.ShippingAddress", {
             extend : 'Ext.data.Model',
 
@@ -36,8 +39,10 @@
                     customerName : 'D. Lightman'
                 });
 
-                order['setAcme.model.ShippingAddress'](address);
-                console.log(order['getAcme.model.ShippingAddress']());
+                console.log(order);
+
+                order.setShippingAddress(address);
+                console.log(order.getShippingAddress());
 
             }
         });
