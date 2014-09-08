@@ -1,0 +1,28 @@
+<!Doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <script type="text/javascript">
+
+        var myClass = function() {
+        };
+
+        myClass.prototype.i = 0;
+
+        var foo = new myClass;
+        console.log(foo.i);
+
+        myClass.prototype.i = 2;
+
+        var bar = new myClass;
+
+        console.log(bar.i);
+        console.log(foo.i);
+
+
+    </script>
+</head>
+<body>
+</body>
+</html>
